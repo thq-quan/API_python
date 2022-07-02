@@ -16,9 +16,7 @@ def predict():
     json_ = request.json
     cv_json = encoder.transform(json_)
     query = pd.DataFrame(cv_json)
-    cv_query = query.astype({"region":'float', "language":'float', "package":'float', "timezone":'float', "lasttime":'float'})
-    # return str(cv_query)
-    prediction = model.predict(cv_query)
+    prediction = model.predict(query)
     return jsonify({"prediction": list(prediction)})
         
 if __name__ == "__main__":
