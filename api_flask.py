@@ -1,3 +1,4 @@
+import numpy as np
 import pandas as pd
 from flask import Flask, request, jsonify
 import pickle
@@ -17,7 +18,13 @@ def predict():
     cv_json = encoder.transform(json_)
     query = pd.DataFrame(cv_json)
     prediction = model.predict(query)
-    return jsonify({"prediction": list(prediction)})
+    predict_proba = model.predict_proba(query)
+    proba_list = predict_proba.tolist()
+    stack = np.column_stack((proba_list, prediction))
+    # return str(ab)
+    re_list = stack.tolist()
+    return jsonify({"prediction": list(re_list) })
+    # return jsonify({"prediction": list(prediction)})
         
 if __name__ == "__main__":
     app.run(debug=True)
